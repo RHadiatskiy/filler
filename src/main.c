@@ -51,23 +51,24 @@ void			parse_matrix_size(char *line, t_matrix_size *matrix_size)
 
 void			parse_piece_size(char *line, t_piece_size *piece_size)
 {
-	while (get_next_line(0, &line) && !flr_strstr(line, "Piece"))
-		;
-	while (*line)
-		if (ft_isdigit(*line++))
+	int				i;
+
+	i = 0;
+	while (line[i])
+		if (ft_isdigit(line[i++]))
 			break ;
-	*line--;
-	while (ft_isdigit(*line))
-		piece_size->height = piece_size->height * 10 + (*line++ - '0');
-	*line++;
-	while (ft_isdigit(*line))
-		piece_size->width = piece_size->width * 10 + (*line++ - '0');
+	line[i--];
+	while (ft_isdigit(line[i]))
+		piece_size->height = piece_size->height * 10 + (line[i++] - '0');
+	line[i++];
+	while (ft_isdigit(line[i]))
+		piece_size->width = piece_size->width * 10 + (line[i++] - '0');
 }
 
 char			**alocate_matrix(size_t height, size_t width)
 {
-	char	**matrix;
-	int		j;
+	char		**matrix;
+	int			j;
 
 	j = 0;
 	if (!(matrix = (char **)malloc(sizeof(char *) * height + 1)))
@@ -82,19 +83,27 @@ char			**alocate_matrix(size_t height, size_t width)
 	return (matrix);
 }
 
-char			**fill_matrix(char **matrix, size_t width)
+char			**reading_create_map(char **matrix, char *line, t_matrix_size *matrix_size, t_piece_size *piece_size)
 {
-	int		i;
-	int		j;
+	int			x;
+	int			y;
+	int			i;
 
-	i = 0;
-	while (matrix[i])
+	x = 0;
+	while (get_next_line(0, &line) && !flr_strstr(line, "Piece") && x < matrix_size->x)
 	{
-		j = 0;
-		while (width > j)
-			matrix[i][j++] = '.';
-		i++;
+		if (line[0] == '0')
+		{
+			y = 0;
+			i = 0;
+			while (line[i++] != ' ')
+				;
+			while (line[i] != '\n' && y < matrix_size->y)
+				matrix[x][y++] = line[++i];
+			x++;
+		}
 	}
+	parse_piece_size(line, piece_size);
 	return (matrix);
 }
 
@@ -110,10 +119,10 @@ int				main(void)
 	matrix_size = initial_matrix_size();
 	piece_size = initial_piece_size();
 	parse_matrix_size(line, matrix_size);
-	parse_piece_size(line, piece_size);
 
 	matrix = alocate_matrix(matrix_size->x, matrix_size->y);
-	matrix = fill_matrix(matrix, matrix_size->y);
+	matrix = reading_create_map(matrix, line, matrix_size, piece_size);
+
 	while (matrix[i])
 		printf("%s\n", matrix[i++]);
 
