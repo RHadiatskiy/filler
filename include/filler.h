@@ -31,6 +31,10 @@ typedef struct	s_matrix_size
 	size_t			y;
 }				t_matrix_size;
 
-int				flr_strstr(char *big, char *little);
+int				ft_isstrstr(char *big, char *little);
+t_matrix_size	*initial_matrix_size(void);
+t_piece_size	*initial_piece_size(void);
+void			parse_matrix_size(char *line, t_matrix_size *matrix_size);
+void			parse_piece_size(char *line, t_piece_size *piece_size);
 
 #endif

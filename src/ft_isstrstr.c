@@ -1,6 +1,6 @@
 #include "../include/filler.h"
 
-int		flr_strstr(char *big, char *little)
+int		ft_isstrstr(char *big, char *little)
 {
 	int		i;
 	int		j;

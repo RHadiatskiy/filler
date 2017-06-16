@@ -17,7 +17,8 @@ CFLAGS=
 LIBFT= -L ./libft/ -lft
 MAIN= ./src/main.c
 
-SRC= ./src/flr_strstr.c
+SRC= ./src/ft_isstrstr.c ./src/filler_initial.c \
+	./src/filler_parsing.c
 
 all: $(NAME)
 
