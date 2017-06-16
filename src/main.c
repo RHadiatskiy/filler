@@ -30,14 +30,16 @@ char			**alocate_matrix(size_t height, size_t width)
 	return (matrix);
 }
 
-char			**reading_create_map(char **matrix, char *line, t_matrix_size *matrix_size, t_piece_size *piece_size)
+char			**reading_create_map(char **matrix, char *line, \
+	t_matrix_size *matrix_size, t_piece_size *piece_size)
 {
 	int			x;
 	int			y;
 	int			i;
 
 	x = 0;
-	while (get_next_line(0, &line) && !ft_isstrstr(line, "Piece") && x < matrix_size->x)
+	while (get_next_line(0, &line) && !ft_isstrstr(line, "Piece") && \
+		x < matrix_size->x)
 	{
 		if (line[0] == '0')
 		{
@@ -45,6 +47,7 @@ char			**reading_create_map(char **matrix, char *line, t_matrix_size *matrix_siz
 			i = 0;
 			while (line[i++] != ' ')
 				;
+			i--;
 			while (line[i] != '\n' && y < matrix_size->y)
 				matrix[x][y++] = line[++i];
 			x++;
@@ -54,32 +57,38 @@ char			**reading_create_map(char **matrix, char *line, t_matrix_size *matrix_siz
 	return (matrix);
 }
 
+void			print_maxtrix(char **matrix)
+{
+	int			i;
+	int			j;
+
+	i = 0;
+	while (matrix[i])
+	{
+		j = 0;
+		while (matrix[i][j])
+			write(1, &matrix[i][j++], 1);
+		write(1, "\n", 1);
+		i++;
+	}
+}
+
 int				main(void)
 {
-	char			**matrix;
 	char			*line;
 	t_matrix_size	*matrix_size;
 	t_piece_size	*piece_size;
-	int 			i;
+	t_player		*player;
+	t_matrix		*matrix;
 
-	i = 0;
 	matrix_size = initial_matrix_size();
 	piece_size = initial_piece_size();
-	parse_matrix_size(line, matrix_size);
-
-	matrix = alocate_matrix(matrix_size->x, matrix_size->y);
-	matrix = reading_create_map(matrix, line, matrix_size, piece_size);
-
-	while (matrix[i])
-		printf("%s\n", matrix[i++]);
-
-	// printf("x : %zu\n", matrix_size->x);
-	// printf("y : %zu\n", matrix_size->y);
-
-	printf("height : %zu\n", piece_size->height);
-	printf("width : %zu\n", piece_size->width);
-
-
+	player = initial_player();
+	matrix = initial_matrix();
+	// filler_initial(matrix, matrix_size, piece_size, player);
+	matrix = filler_parsing(matrix, matrix_size, piece_size, player);
+	print_maxtrix(matrix->map);
+	print_maxtrix(matrix->piece);
 	free(matrix_size);
 	free(piece_size);
 	return (0);
