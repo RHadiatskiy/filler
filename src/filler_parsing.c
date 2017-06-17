@@ -36,7 +36,7 @@ void			parse_players(char *line, t_player *player)
 	}
 }
 
-void			parse_matrix_size(char *line, t_matrix_size *matrix_size)
+void			parse_map_size(char *line, t_map_size *map_size)
 {
 	if (*line)
 		while (*line)
@@ -45,11 +45,11 @@ void			parse_matrix_size(char *line, t_matrix_size *matrix_size)
 	line--;
 	if (ft_isdigit(*line))
 		while (ft_isdigit(*line))
-			matrix_size->x = matrix_size->x * 10 + (*line++ - '0');
+			map_size->x = map_size->x * 10 + (*line++ - '0');
 	line++;
 	if (ft_isdigit(*line))
 		while (ft_isdigit(*line))
-			matrix_size->y = matrix_size->y * 10 + (*line++ - '0');
+			map_size->y = map_size->y * 10 + (*line++ - '0');
 }
 
 void			parse_piece_size(char *line, t_piece_size *piece_size)
@@ -93,7 +93,7 @@ char			**parse_piece(char *line, char **piece, \
 	return (piece);
 }
 
-t_matrix		*filler_parsing(t_matrix *matrix, t_matrix_size *matrix_size, \
+t_matrix		*filler_parsing(t_matrix *matrix, t_map_size *map_size, \
 	t_piece_size *piece_size, t_player *player)
 {
 	int				i;
@@ -103,9 +103,9 @@ t_matrix		*filler_parsing(t_matrix *matrix, t_matrix_size *matrix_size, \
 	while (get_next_line(0, &line) && !ft_isstrstr(line, "Plateau"))
 		if (ft_isstrstr(line, "exec p1") || ft_isstrstr(line, "exec p2"))
 			parse_players(line, player);
-	parse_matrix_size(line, matrix_size);
-	matrix->map = alocate_matrix(matrix_size->x, matrix_size->y);
-	matrix->map = reading_create_map(matrix->map, line, matrix_size, \
+	parse_map_size(line, map_size);
+	matrix->map = alocate_matrix(map_size->x, map_size->y);
+	matrix->map = reading_create_map(matrix->map, line, map_size, \
 		piece_size);
 	matrix->piece = alocate_matrix(piece_size->height, piece_size->width);
 	matrix->piece = parse_piece(line, matrix->piece, piece_size);

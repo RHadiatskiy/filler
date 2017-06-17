@@ -25,11 +25,11 @@ typedef struct	s_piece_size
 	size_t			width;
 }				t_piece_size;
 
-typedef struct	s_matrix_size
+typedef struct	s_map_size
 {
 	size_t			x;
 	size_t			y;
-}				t_matrix_size;
+}				t_map_size;
 
 typedef struct	s_player
 {
@@ -44,21 +44,21 @@ typedef struct	s_matrix
 }				t_matrix;
 
 int				ft_isstrstr(char *big, char *little);
-t_matrix_size	*initial_matrix_size(void);
+t_map_size		*initial_map_size(void);
 t_piece_size	*initial_piece_size(void);
 t_player		*initial_player(void);
 t_matrix		*initial_matrix(void);
 char			**alocate_matrix(size_t height, size_t width);
 char			**reading_create_map(char **matrix, char *line, \
-	t_matrix_size *matrix_size, t_piece_size *piece_size);
-void			parse_matrix_size(char *line, t_matrix_size *matrix_size);
+	t_map_size *map_size, t_piece_size *piece_size);
+void			parse_map_size(char *line, t_map_size *map_size);
 void			parse_piece_size(char *line, t_piece_size *piece_size);
 void			parse_players(char *line, t_player *player);
 char			**parse_piece(char *line, char **piece, \
 	t_piece_size *piece_size);
-void			filler_initial(t_matrix *matrix, t_matrix_size *matrix_size, \
+void			filler_initial(t_matrix *matrix, t_map_size *map_size, \
 	t_piece_size *piece_size, t_player *player);
-t_matrix		*filler_parsing(t_matrix *matrix, t_matrix_size *matrix_size, \
+t_matrix		*filler_parsing(t_matrix *matrix, t_map_size *map_size, \
 	t_piece_size *piece_size, t_player *player);
 
 #endif

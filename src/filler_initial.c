@@ -12,15 +12,15 @@
 
 #include "../include/filler.h"
 
-t_matrix_size	*initial_matrix_size(void)
+t_map_size	*initial_map_size(void)
 {
-	t_matrix_size	*matrix_size;
+	t_map_size		*map_size;
 
-	if (!(matrix_size = (t_matrix_size *)malloc(sizeof(t_matrix_size))))
+	if (!(map_size = (t_map_size *)malloc(sizeof(t_map_size))))
 		return (NULL);
-	matrix_size->x = 0;
-	matrix_size->y = 0;
-	return (matrix_size);
+	map_size->x = 0;
+	map_size->y = 0;
+	return (map_size);
 }
 
 t_piece_size	*initial_piece_size(void)
@@ -56,10 +56,10 @@ t_matrix		*initial_matrix(void)
 	return (matrix);
 }
 
-void			filler_initial(t_matrix *matrix, t_matrix_size *matrix_size, \
+void			filler_initial(t_matrix *matrix, t_map_size *map_size, \
 	t_piece_size *piece_size, t_player *player)
 {
-	matrix_size = initial_matrix_size();
+	map_size = initial_map_size();
 	piece_size = initial_piece_size();
 	player = initial_player();
 	matrix = initial_matrix();

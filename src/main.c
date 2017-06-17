@@ -31,7 +31,7 @@ char			**alocate_matrix(size_t height, size_t width)
 }
 
 char			**reading_create_map(char **matrix, char *line, \
-	t_matrix_size *matrix_size, t_piece_size *piece_size)
+	t_map_size *map_size, t_piece_size *piece_size)
 {
 	int			x;
 	int			y;
@@ -39,7 +39,7 @@ char			**reading_create_map(char **matrix, char *line, \
 
 	x = 0;
 	while (get_next_line(0, &line) && !ft_isstrstr(line, "Piece") && \
-		x < matrix_size->x)
+		x < map_size->x)
 	{
 		if (line[0] == '0')
 		{
@@ -48,7 +48,7 @@ char			**reading_create_map(char **matrix, char *line, \
 			while (line[i++] != ' ')
 				;
 			i--;
-			while (line[i] != '\n' && y < matrix_size->y)
+			while (line[i] != '\n' && y < map_size->y)
 				matrix[x][y++] = line[++i];
 			x++;
 		}
@@ -73,23 +73,42 @@ void			print_maxtrix(char **matrix)
 	}
 }
 
+void			filler_algorithm(t_matrix *matrix, t_map_size *map_size, t_piece_size *piece_size, char you)
+{
+	int			overlap;
+	char		enemy;
+	int			x;
+	int			y;
+
+	overlap = 0;
+	x = 0;
+	y = 0;
+	enemy = (you == 'o' || you == 'O') ? 'X' : 'O';
+	while (x <= (map_size->x - (piece_size->height - 1)))
+	{
+		while (y <= (map_size->y - (piece_size->width - 1)))
+		{
+
+		}
+	}
+}
+
 int				main(void)
 {
-	char			*line;
-	t_matrix_size	*matrix_size;
+	t_map_size		*map_size;
 	t_piece_size	*piece_size;
 	t_player		*player;
 	t_matrix		*matrix;
 
-	matrix_size = initial_matrix_size();
+	map_size = initial_map_size();
 	piece_size = initial_piece_size();
 	player = initial_player();
 	matrix = initial_matrix();
 	// filler_initial(matrix, matrix_size, piece_size, player);
-	matrix = filler_parsing(matrix, matrix_size, piece_size, player);
+	matrix = filler_parsing(matrix, map_size, piece_size, player);
 	print_maxtrix(matrix->map);
 	print_maxtrix(matrix->piece);
-	free(matrix_size);
+	free(map_size);
 	free(piece_size);
 	return (0);
 }
