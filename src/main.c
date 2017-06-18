@@ -95,13 +95,15 @@ int				check_connect(t_matrix *matrix, int x, int y, char you, t_piece_size *pie
 	return (overlap);
 }
 
-void			filler_algorithm(t_matrix *matrix, t_map_size *map_size, t_piece_size *piece_size, char you)
+t_get_coord		*filler_algorithm(t_matrix *matrix, t_map_size *map_size, t_piece_size *piece_size, char you)
 {
 	char		enemy;
+	t_get_coord	*get_coord;
 	int			x;
 	int			y;
 
 	x = 0;
+	get_coord = initial_get_coord_list();
 	enemy = (you == 'o' || you == 'O') ? 'X' : 'O';
 	while (x <= (map_size->x - piece_size->height))
 	{
@@ -110,16 +112,15 @@ void			filler_algorithm(t_matrix *matrix, t_map_size *map_size, t_piece_size *pi
 		{
 			if (check_connect(matrix, x, y, you, piece_size) == 1)
 			{
-				ft_putnbr_fd(x, 1);
-				write(1, " ", 1);
-				ft_putnbr_fd(y, 1);
-				write(1, "\n", 1);
-				break ;
+				coord_list_added(get_coord->x, x);
+				coord_list_added(get_coord->y, y);
+				// break ;
 			}
 			y++;
 		}
 		x++;
 	}
+	return (get_coord);
 }
 
 int				main(void)
@@ -128,6 +129,7 @@ int				main(void)
 	t_piece_size	*piece_size;
 	t_player		*player;
 	t_matrix		*matrix;
+	t_get_coord		*get_coord;
 
 	map_size = initial_map_size();
 	piece_size = initial_piece_size();
@@ -135,9 +137,13 @@ int				main(void)
 	matrix = initial_matrix();
 	// filler_initial(matrix, matrix_size, piece_size, player);
 	matrix = filler_parsing(matrix, map_size, piece_size, player);
-	print_maxtrix(matrix->map);
-	print_maxtrix(matrix->piece);
-	filler_algorithm(matrix, map_size, piece_size, 'O');
+	// print_maxtrix(matrix->map);
+	// print_maxtrix(matrix->piece);
+	get_coord = filler_algorithm(matrix, map_size, piece_size, 'O');
+	ft_putnbr_fd(get_coord->x->coord, 1);
+	write(1, " ", 1);
+	ft_putnbr_fd(get_coord->y->coord, 1);
+	write(1, "\n", 1);
 	free(map_size);
 	free(piece_size);
 	return (0);
