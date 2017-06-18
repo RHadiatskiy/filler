@@ -73,23 +73,52 @@ void			print_maxtrix(char **matrix)
 	}
 }
 
-void			filler_algorithm(t_matrix *matrix, t_map_size *map_size, t_piece_size *piece_size, char you)
+int				check_connect(t_matrix *matrix, int x, int y, char you, t_piece_size *piece_size)
 {
 	int			overlap;
+	int			i;
+	int			j;
+
+	overlap = 0;
+	i = 0;
+	while (i < piece_size->height)
+	{
+		j = 0;	
+		while (j < piece_size->width)
+		{
+			if (matrix->map[x + i][y + j] == you && matrix->piece[i][j] == '*')
+				overlap++;
+			j++;
+		}
+		i++;
+	}
+	return (overlap);
+}
+
+void			filler_algorithm(t_matrix *matrix, t_map_size *map_size, t_piece_size *piece_size, char you)
+{
 	char		enemy;
 	int			x;
 	int			y;
 
-	overlap = 0;
 	x = 0;
-	y = 0;
 	enemy = (you == 'o' || you == 'O') ? 'X' : 'O';
-	while (x <= (map_size->x - (piece_size->height - 1)))
+	while (x <= (map_size->x - piece_size->height))
 	{
-		while (y <= (map_size->y - (piece_size->width - 1)))
+		y = 0;
+		while (y <= (map_size->y - piece_size->width))
 		{
-
+			if (check_connect(matrix, x, y, you, piece_size) == 1)
+			{
+				ft_putnbr_fd(x, 1);
+				write(1, " ", 1);
+				ft_putnbr_fd(y, 1);
+				write(1, "\n", 1);
+				break ;
+			}
+			y++;
 		}
+		x++;
 	}
 }
 
@@ -108,6 +137,7 @@ int				main(void)
 	matrix = filler_parsing(matrix, map_size, piece_size, player);
 	print_maxtrix(matrix->map);
 	print_maxtrix(matrix->piece);
+	filler_algorithm(matrix, map_size, piece_size, 'O');
 	free(map_size);
 	free(piece_size);
 	return (0);
