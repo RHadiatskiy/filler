@@ -13,20 +13,6 @@
 #ifndef FILLER_H
 # define FILLER_H
 
-/*
-** Colorize an output of printf
-*/
-
-# define RESET		"\033[0m"
-# define RED		"\033[1;31m"
-# define YELLOW		"\033[1;33m"
-# define WHITE		"\033[1;37m"
-# define GREEN		"\033[1;32m"
-
-/*
-** ----------------------------
-*/
-
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
@@ -41,33 +27,28 @@ typedef struct	s_piece_size
 
 typedef struct	s_map_size
 {
-	size_t			x;
-	size_t			y;
+	size_t				x;
+	size_t				y;
 }				t_map_size;
 
 typedef struct	s_player
 {
-	unsigned int	first : 1;
-	unsigned int	second : 1;
+	unsigned int		first : 1;
+	unsigned int		second : 1;
 }				t_player;
 
 typedef struct	s_matrix
 {
-	char			**map;
-	char			**piece;
+	char				**map;
+	char				**piece;
 }				t_matrix;
-
-typedef struct	s_coord
-{
-	int				coord;
-	int				n;
-	struct s_coord	*next;
-}				t_coord;
 
 typedef struct	s_get_coord
 {
-	t_coord			*x;
-	t_coord			*y;
+	size_t				x;
+	size_t				y;
+	int					n;
+	struct s_get_coord	*next;
 }				t_get_coord;
 
 int				ft_isstrstr(char *big, char *little);
@@ -88,9 +69,8 @@ void			filler_initial(t_matrix *matrix, t_map_size *map_size, \
 t_matrix		*filler_parsing(t_matrix *matrix, t_map_size *map_size, \
 	t_piece_size *piece_size, t_player *player);
 
-t_coord			*initial_coord_list(void);
 t_get_coord		*initial_get_coord_list(void);
-void			coord_list_added(t_coord *list, int coord);
+void			coord_list_added(t_get_coord *list, size_t x, size_t y);
 void			print_coord_list(t_get_coord *get_coord);
 
 #endif
