@@ -42,6 +42,7 @@ t_player		*initial_player(void)
 		return (NULL);
 	player->first = 0;
 	player->second = 0;
+	player->symbol = 0;
 	return (player);
 }
 

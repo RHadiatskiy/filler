@@ -35,6 +35,7 @@ typedef struct	s_player
 {
 	unsigned int		first : 1;
 	unsigned int		second : 1;
+	char				symbol;
 }				t_player;
 
 typedef struct	s_matrix

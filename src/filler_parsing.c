@@ -79,16 +79,16 @@ char			**parse_piece(char *line, char **piece, \
 	int			i;
 
 	x = 0;
-	while (get_next_line(0, &line) && (x < piece_size->height))
+	while (x < piece_size->height && get_next_line(0, &line))
 	{
 		if (line[0] == '*' || line[0] == '.')
 		{
 			y = 0;
 			i = 0;
-			while (line[i] != '\n' && (y < piece_size->width))
+			while (y < piece_size->width)
 				piece[x][y++] = line[i++];
-			x++;
 		}
+		x++;
 	}
 	return (piece);
 }
