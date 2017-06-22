@@ -59,7 +59,7 @@ t_player		*initial_player(void);
 t_matrix		*initial_matrix(void);
 char			**alocate_matrix(size_t height, size_t width);
 char			**reading_create_map(char **matrix, char *line, \
-	t_map_size *map_size, t_piece_size *piece_size);
+	t_map_size *map_size);
 void			parse_map_size(char *line, t_map_size *map_size);
 void			parse_piece_size(char *line, t_piece_size *piece_size);
 void			parse_players(char *line, t_player *player);

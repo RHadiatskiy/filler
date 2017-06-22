@@ -23,14 +23,13 @@ SRC= ./src/ft_isstrstr.c ./src/filler_initial.c \
 all: $(NAME)
 
 $(NAME):
-	@make -C libft
-	@$(CC) $(NAME) $(CFLAGS) $(MAIN) $(SRC) $(LIBFT)
+	make -C libft
+	$(CC) $(NAME) $(CFLAGS) $(MAIN) $(SRC) $(LIBFT)
 
 clean:
-	@make -C libft fclean
+	make -C libft fclean
 
 fclean: clean
-	@rm $(NAME)
-	@rm $(CHCK)
+	rm $(NAME)
 
 re: fclean all

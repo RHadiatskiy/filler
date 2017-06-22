@@ -31,15 +31,14 @@ char			**alocate_matrix(size_t height, size_t width)
 }
 
 char			**reading_create_map(char **matrix, char *line, \
-	t_map_size *map_size, t_piece_size *piece_size)
+	t_map_size *map_size)
 {
 	int			x;
 	int			y;
 	int			i;
 
 	x = 0;
-	while (get_next_line(0, &line) && !ft_isstrstr(line, "Piece") && \
-		x < map_size->x)
+	while (x < map_size->x && get_next_line(0, &line))
 	{
 		if (line[0] == '0')
 		{
@@ -48,12 +47,11 @@ char			**reading_create_map(char **matrix, char *line, \
 			while (line[i++] != ' ')
 				;
 			i--;
-			while (line[i] != '\n' && y < map_size->y)
+			while (line[i] && y < map_size->y)
 				matrix[x][y++] = line[++i];
 			x++;
 		}
 	}
-	parse_piece_size(line, piece_size);
 	return (matrix);
 }
 
@@ -91,10 +89,10 @@ int				check_connect(t_matrix *matrix, int x, int y, t_player *player, t_piece_s
 	i = 0;
 	while (i < piece_size->height)
 	{
-		j = 0;	
+		j = 0;
 		while (j < piece_size->width)
 		{
-			if (matrix->map[x + i][y + j] == uppersymb(player->symbol) && matrix->piece[i][j] == '*')
+			if ((uppersymb(matrix->map[x + i][y + j]) == player->symbol) && matrix->piece[i][j] == '*')
 				overlap++;
 			j++;
 		}
@@ -105,13 +103,11 @@ int				check_connect(t_matrix *matrix, int x, int y, t_player *player, t_piece_s
 
 t_get_coord		*filler_algorithm(t_matrix *matrix, t_map_size *map_size, t_piece_size *piece_size, t_player *player)
 {
-	char			enemy;
 	t_get_coord		*get_coord;
 	int				x;
 	int				y;
 
 	get_coord = initial_get_coord_list();
-	enemy = (player->symbol == 'o' || player->symbol == 'O') ? 'X' : 'O';
 	x = 0;
 	while (x <= (map_size->x - piece_size->height))
 	{
@@ -120,7 +116,6 @@ t_get_coord		*filler_algorithm(t_matrix *matrix, t_map_size *map_size, t_piece_s
 		{
 			if (check_connect(matrix, x, y, player, piece_size) == 1)
 				coord_list_added(get_coord, x, y);
-
 			y++;
 		}
 		x++;
@@ -141,27 +136,36 @@ int				main(void)
 	piece_size = initial_piece_size();
 	player = initial_player();
 	matrix = initial_matrix();
-	// filler_initial(matrix, matrix_size, piece_size, player);
-	matrix = filler_parsing(matrix, map_size, piece_size, player);
-	// print_maxtrix(matrix->map);
-	// print_maxtrix(matrix->piece);
-
-	player->symbol = player->first == 1 ? 'O' : 'X';
-	get_coord = filler_algorithm(matrix, map_size, piece_size, player);
-
-	// printf("Piece size:\nheight : %zd\nwidth : %zd\n\n", piece_size->height, piece_size->width);
-	// printf("Map size:\nx : %zd\ny : %zd\n\n", map_size->x, map_size->y);
-	// printf("Player:\nfirst : %u\nsecond : %u\n\n", player->first, player->second);
-	// printf("Player: %c\n\n", player_c);
-
-	ft_putnbr(get_coord->x);
-	write(1, " ", 1);
-	ft_putnbr(get_coord->y);
-	write(1, "\n", 1);
-
-	// print_coord_list(filler_algorithm(matrix, map_size, piece_size, 'O'));
-
-	free(map_size);
-	free(piece_size);
+	while (get_next_line(0, &line) > 0)
+	{
+		if (ft_isstrstr(line, "exec p1") || ft_isstrstr(line, "exec p2"))
+			parse_players(line, player);
+		if (ft_isstrstr(line, "Plateau"))
+		{
+			parse_map_size(line, map_size);
+			matrix->map = alocate_matrix(map_size->x, map_size->y);
+			// dprintf(2, "map size:\nx : %zu\ny : %zu\n\n", map_size->x, map_size->y);
+			matrix->map = reading_create_map(matrix->map, line, map_size);
+		}
+		if (ft_isstrstr(line, "Piece"))
+		{
+			parse_piece_size(line, piece_size);
+			// dprintf(2, "piece size:\nheight : %zu\nwidth : %zu\n\n", piece_size->height, piece_size->width);
+			matrix->piece = alocate_matrix(piece_size->height, piece_size->width);
+			matrix->piece = parse_piece(line, matrix->piece, piece_size);
+			player->symbol = player->first == 1 ? 'O' : 'X';
+			// dprintf(2, "player : %c\n\n", player->symbol);
+			get_coord = filler_algorithm(matrix, map_size, piece_size, player);
+			// print_coord_list(get_coord);
+			ft_putnbr(get_coord->x);
+			write(1, " ", 1);
+			ft_putnbr(get_coord->y);
+			write(1, "\n", 1);
+		}
+		// free(map_size);
+		// free(piece_size);
+		// free(player);
+		// free(get_coord);
+	}
 	return (0);
 }
