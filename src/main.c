@@ -79,20 +79,43 @@ char			uppersymb(char symbol)
 		return (symbol);
 }
 
-int				check_connect(t_matrix *matrix, int x, int y, t_player *player, t_piece_size *piece_size)
+int				check_enemy(t_matrix *matrix, int x, int y, char enemy, t_piece_size *piece_size)
 {
-	int			overlap;
 	int			i;
 	int			j;
 
-	overlap = 0;
 	i = 0;
 	while (i < piece_size->height)
 	{
 		j = 0;
 		while (j < piece_size->width)
 		{
-			if ((uppersymb(matrix->map[x + i][y + j]) == player->symbol) && matrix->piece[i][j] == '*')
+			if (((uppersymb(matrix->map[x + i][y + j]) == enemy) && matrix->piece[i][j] == '*'))
+				return (0);
+			j++;
+		}
+		i++;
+	}
+	return (1);
+}
+
+int				check_connect(t_matrix *matrix, int x, int y, t_player *player, t_piece_size *piece_size)
+{
+	int			overlap;
+	int			i;
+	int			j;
+	char		enemy;
+
+	overlap = 0;
+	i = 0;
+	enemy = player->symbol == 'O' ? 'X' : 'O';
+	while (i < piece_size->height)
+	{
+		j = 0;
+		while (j < piece_size->width)
+		{
+			if (((uppersymb(matrix->map[x + i][y + j]) == player->symbol) && matrix->piece[i][j] == '*') && \
+				check_enemy(matrix, x, y, enemy, piece_size))
 				overlap++;
 			j++;
 		}
