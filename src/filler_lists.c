@@ -1,17 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   filler_lists.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rhadiats <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/06/29 19:41:47 by rhadiats          #+#    #+#             */
+/*   Updated: 2017/06/29 19:41:48 by rhadiats         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/filler.h"
-
-t_get_coord		*initial_get_coord_list(void)
-{
-	t_get_coord		*initial;
-
-	if (!(initial = (t_get_coord *)malloc(sizeof(t_get_coord))))
-		return (NULL);
-	initial->x = 0;
-	initial->y = 0;
-	initial->n = 0;
-	initial->next = NULL;
-	return (initial);
-}
 
 void			coord_list_added(t_get_coord *list, size_t x, size_t y)
 {

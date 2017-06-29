@@ -12,26 +12,17 @@
 
 #include "../include/filler.h"
 
-t_map_size	*initial_map_size(void)
+t_size			*initial_size(void)
 {
-	t_map_size		*map_size;
+	t_size		*size;
 
-	if (!(map_size = (t_map_size *)malloc(sizeof(t_map_size))))
+	if (!(size = (t_size *)malloc(sizeof(t_size))))
 		return (NULL);
-	map_size->x = 0;
-	map_size->y = 0;
-	return (map_size);
-}
-
-t_piece_size	*initial_piece_size(void)
-{
-	t_piece_size	*piece_size;
-
-	if (!(piece_size = (t_piece_size *)malloc(sizeof(t_piece_size))))
-		return (NULL);
-	piece_size->height = 0;
-	piece_size->width = 0;
-	return (piece_size);
+	size->piece_height = 0;
+	size->piece_width = 0;
+	size->map_x = 0;
+	size->map_y = 0;
+	return (size);
 }
 
 t_player		*initial_player(void)
@@ -57,11 +48,23 @@ t_matrix		*initial_matrix(void)
 	return (matrix);
 }
 
-void			filler_initial(t_matrix *matrix, t_map_size *map_size, \
-	t_piece_size *piece_size, t_player *player)
+t_get_coord		*initial_get_coord_list(void)
 {
-	map_size = initial_map_size();
-	piece_size = initial_piece_size();
+	t_get_coord		*initial;
+
+	if (!(initial = (t_get_coord *)malloc(sizeof(t_get_coord))))
+		return (NULL);
+	initial->x = 0;
+	initial->y = 0;
+	initial->n = 0;
+	initial->next = NULL;
+	return (initial);
+}
+
+void			filler_initial(t_matrix *matrix, t_size *size, \
+	t_player *player)
+{
+	size = initial_size();
 	player = initial_player();
 	matrix = initial_matrix();
 }
