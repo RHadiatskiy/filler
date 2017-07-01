@@ -13,6 +13,12 @@
 #ifndef FILLER_H
 # define FILLER_H
 
+# define RESET		"\033[0m"
+# define RED		"\033[1;31m"
+# define YELLOW		"\033[1;33m"
+# define WHITE		"\033[1;37m"
+# define GREEN		"\033[1;32m"
+
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
@@ -37,6 +43,7 @@ typedef struct	s_player
 typedef struct	s_matrix
 {
 	char				**map;
+	int					**field;
 	char				**piece;
 }				t_matrix;
 
@@ -65,5 +72,12 @@ t_matrix		*filler_parsing(t_matrix *matrix, t_size *size, \
 t_get_coord		*initial_get_coord_list(void);
 void			coord_list_added(t_get_coord *list, size_t x, size_t y);
 void			print_coord_list(t_get_coord *get_coord);
+void			matrix_free(t_matrix *matrix, t_size *size);
+char			uppersymb(char symbol);
+
+int				**alocate_field(size_t height, size_t width);
+int				**init_field(t_matrix *matrix, t_size *size, t_player *player);
+int				**fill_field(t_matrix *matrix, t_size *size, t_player *player);
+void			print_field(int **matrix, t_size *size);
 
 #endif

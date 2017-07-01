@@ -44,6 +44,7 @@ t_matrix		*initial_matrix(void)
 	if (!(matrix = (t_matrix *)malloc(sizeof(t_matrix))))
 		return (NULL);
 	matrix->map = NULL;
+	matrix->field = 0;
 	matrix->piece = NULL;
 	return (matrix);
 }

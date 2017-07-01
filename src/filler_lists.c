@@ -43,8 +43,9 @@ void			print_coord_list(t_get_coord *get_coord)
 	{
 		while (get_coord->next)
 		{
-			dprintf(2, "%jd %jd \tn :%d\n", get_coord->x, get_coord->y, get_coord->n);
+			dprintf(2, "%s%jd %jd%s \tn :%d\n", GREEN, get_coord->x, get_coord->y, RESET, get_coord->n);
 			get_coord = get_coord->next;
 		}
+		dprintf(2, "%s%jd %jd%s \tn :%d\n", GREEN, get_coord->x, get_coord->y, RESET, get_coord->n);
 	}
 }

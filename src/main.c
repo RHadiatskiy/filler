@@ -12,6 +12,42 @@
 
 #include "../include/filler.h"
 
+void			matrix_free(t_matrix *matrix, t_size *size)
+{
+	if (matrix->map && matrix->field)
+	{
+		while (size->map_x)
+		{
+			free(matrix->map[size->map_x--]);
+			free(matrix->field[size->map_x--]);
+		}
+		free(matrix->map);
+		free(matrix->field);
+	}
+	if (matrix->piece)
+	{
+		while (size->piece_height)
+			free(matrix->piece[size->piece_height--]);
+		free(matrix->piece);
+	}
+}
+
+void			print_coordinats(size_t x, size_t y)
+{
+	ft_putnbr(x);
+	write(1, " ", 1);
+	ft_putnbr(y);
+	write(1, "\n", 1);
+}
+
+char			uppersymb(char symbol)
+{
+	if (symbol == 'x' || symbol == 'o')
+		return (symbol - 32);
+	else
+		return (symbol);
+}
+
 char			**alocate_matrix(size_t height, size_t width)
 {
 	char		**matrix;
@@ -61,22 +97,20 @@ void			print_maxtrix(char **matrix)
 	int			j;
 
 	i = 0;
+	dprintf(2, "\n");
 	while (matrix[i])
 	{
 		j = 0;
 		while (matrix[i][j])
-			write(1, &matrix[i][j++], 1);
-		write(1, "\n", 1);
+		{
+			if (matrix[i][j] == '1')
+				dprintf(2, "%s%c%s", RED, matrix[i][j++], RESET);
+			else
+				dprintf(2, "%c", matrix[i][j++]);
+		}
+		dprintf(2, "\n");
 		i++;
 	}
-}
-
-char			uppersymb(char symbol)
-{
-	if (symbol == 'x' || symbol == 'o')
-		return (symbol - 32);
-	else
-		return (symbol);
 }
 
 int				check_enemy(t_matrix *matrix, int x, int y, char enemy, t_size *size)
@@ -102,8 +136,8 @@ int				check_enemy(t_matrix *matrix, int x, int y, char enemy, t_size *size)
 int				check_connect(t_matrix *matrix, int x, int y, t_player *player, t_size *size)
 {
 	int			overlap;
-	int			i;
-	int			j;
+	size_t		i;
+	size_t		j;
 	char		enemy;
 
 	overlap = 0;
@@ -127,8 +161,8 @@ int				check_connect(t_matrix *matrix, int x, int y, t_player *player, t_size *s
 t_get_coord		*filler_algorithm(t_matrix *matrix, t_size *size, t_player *player)
 {
 	t_get_coord		*get_coord;
-	int				x;
-	int				y;
+	size_t			x;
+	size_t			y;
 
 	get_coord = initial_get_coord_list();
 	x = 0;
@@ -138,14 +172,13 @@ t_get_coord		*filler_algorithm(t_matrix *matrix, t_size *size, t_player *player)
 		while (y <= (size->map_y - size->piece_width))
 		{
 			if (check_connect(matrix, x, y, player, size) == 1)
-			{
-				dprintf(2, "%jd %jd\n", get_coord->x, get_coord->y);
 				coord_list_added(get_coord, x, y);
-			}
 			y++;
 		}
 		x++;
 	}
+	print_coordinats(get_coord->x, get_coord->y);
+	print_coord_list(get_coord);
 	return (get_coord);
 }
 
@@ -169,28 +202,21 @@ int				main(void)
 		{
 			parse_map_size(line, size);
 			matrix->map = alocate_matrix(size->map_x, size->map_y);
-			// dprintf(2, "map size:\nx : %zu\ny : %zu\n\n", map_size->x, map_size->y);
 			matrix->map = reading_create_map(matrix->map, line, size);
+			matrix->field = fill_field(matrix, size, player);
+			print_field(matrix->field, size);
 		}
 		if (ft_isstrstr(line, "Piece"))
 		{
 			parse_piece_size(line, size);
-			// dprintf(2, "piece size:\nheight : %zu\nwidth : %zu\n\n", piece_size->height, piece_size->width);
 			matrix->piece = alocate_matrix(size->piece_height, size->piece_width);
 			matrix->piece = parse_piece(line, matrix->piece, size);
 			player->symbol = player->first == 1 ? 'O' : 'X';
-			// dprintf(2, "player : %c\n\n", player->symbol);
 			get_coord = filler_algorithm(matrix, size, player);
-			// print_coord_list(get_coord);
-			// ft_putnbr(get_coord->x);
-			// write(1, " ", 1);
-			// ft_putnbr(get_coord->y);
-			// write(1, "\n", 1);
+			matrix_free(matrix, size);
 		}
-		// free(map_size);
-		// free(piece_size);
-		// free(player);
-		// free(get_coord);
 	}
+	free(matrix);
+	free(size);
 	return (0);
 }

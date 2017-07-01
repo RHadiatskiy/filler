@@ -23,7 +23,7 @@ NAME = libft.a
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	ar rc $(NAME) $(OBJS) $(HEADER)
+	@ar rc $(NAME) $(OBJS) $(HEADER)
 
 ft_atoi.o: ft_atoi.c
 	@gcc -c -Wall -Wextra -Werror ft_atoi.c
@@ -221,9 +221,9 @@ get_next_line.o: get_next_line.c
 	@gcc -c -Wall -Wextra -Werror get_next_line.c
 
 clean:
-	rm -f $(OBJS)
+	@rm -f $(OBJS)
 
 fclean: clean
-	rm -f $(NAME)
+	@rm -f $(NAME)
 
 re: fclean all
