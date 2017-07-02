@@ -14,12 +14,15 @@
 
 void			matrix_free(t_matrix *matrix, t_size *size)
 {
+	size_t		x;
+
+	x = size->map_x - 1;
 	if (matrix->map && matrix->field)
 	{
-		while (size->map_x)
+		while (size->map_x && x)
 		{
 			free(matrix->map[size->map_x--]);
-			free(matrix->field[size->map_x--]);
+			free(matrix->field[x--]);
 		}
 		free(matrix->map);
 		free(matrix->field);
@@ -38,6 +41,55 @@ void			print_coordinats(size_t x, size_t y)
 	write(1, " ", 1);
 	ft_putnbr(y);
 	write(1, "\n", 1);
+}
+
+int				check_sum(t_matrix *matrix, size_t x, size_t y, t_size *size)
+{
+	int			i;
+	int			j;
+	int			sum;
+
+	i = 0;
+	sum = 0;
+	while (i < size->piece_height)
+	{
+		j = 0;
+		while (j < size->piece_width)
+		{
+			if (matrix->piece[i][j] == '*')
+				sum += matrix->field[x + i][y + j]; 
+			j++;
+		}
+		i++;
+	}
+	dprintf(2, "\n\n%sSUM : %d%s\n\n", YELLOW, sum, RESET);
+	return (sum);
+}
+
+void			choose_coord(t_matrix *matrix, t_get_coord *get_coord, t_size *size)
+{
+	t_get_coord	*tmp;
+	int			sum;
+	size_t		x;
+	size_t		y;
+	
+	x = get_coord->x;
+	y = get_coord->y;
+	sum = check_sum(matrix, x, y, size);
+	dprintf(2, "\n\n%sSUMMA : %d%s\n\n", RED, sum, RESET);	
+	tmp = get_coord;
+	while (tmp->next)
+	{
+		if (sum > (check_sum(matrix, tmp->next->x, tmp->next->y, size)))
+		{
+			x = tmp->next->x;
+			y = tmp->next->y;
+		}
+		tmp = tmp->next;
+	}
+	dprintf(2, "\n\n%sX : %jd%s\n", YELLOW, x, RESET);
+	dprintf(2, "%sY : %jd%s\n\n", YELLOW, y, RESET);
+	print_coordinats(x, y);
 }
 
 char			uppersymb(char symbol)
@@ -177,9 +229,17 @@ t_get_coord		*filler_algorithm(t_matrix *matrix, t_size *size, t_player *player)
 		}
 		x++;
 	}
-	print_coordinats(get_coord->x, get_coord->y);
+	choose_coord(matrix, get_coord, size);
 	print_coord_list(get_coord);
 	return (get_coord);
+}
+
+void			size_reset(t_size *size)
+{
+	size->piece_height = 0;
+	size->piece_width = 0;
+	size->map_x = 0;
+	size->map_y = 0;
 }
 
 int				main(void)
@@ -203,6 +263,7 @@ int				main(void)
 			parse_map_size(line, size);
 			matrix->map = alocate_matrix(size->map_x, size->map_y);
 			matrix->map = reading_create_map(matrix->map, line, size);
+			matrix->field = init_field(matrix, size, player);
 			matrix->field = fill_field(matrix, size, player);
 			print_field(matrix->field, size);
 		}
