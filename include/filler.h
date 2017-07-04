@@ -77,7 +77,7 @@ char			uppersymb(char symbol);
 
 int				**alocate_field(size_t height, size_t width);
 int				**init_field(t_matrix *matrix, t_size *size, t_player *player);
-void			paste_digit(t_matrix *matrix, t_size *size, t_player *player);
+void			paste_digit(t_matrix *matrix, t_size *size, t_player *player, int *pace);
 int				**fill_field(t_matrix *matrix, t_size *size, t_player *player);
 void			print_field(int **matrix, t_size *size);
 

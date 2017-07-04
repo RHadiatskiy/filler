@@ -12,6 +12,9 @@
 
 #include "../include/filler.h"
 
+int				check_zeros(t_matrix *matrix, t_size *size);
+
+
 void			matrix_free(t_matrix *matrix, t_size *size)
 {
 	size_t		x;
@@ -266,6 +269,7 @@ int				main(void)
 			matrix->field = init_field(matrix, size, player);
 			matrix->field = fill_field(matrix, size, player);
 			print_field(matrix->field, size);
+			dprintf(2, "RET : %d\n", check_zeros(matrix, size));
 		}
 		if (ft_isstrstr(line, "Piece"))
 		{

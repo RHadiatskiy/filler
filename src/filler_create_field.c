@@ -67,15 +67,15 @@ int				check_zeros(t_matrix *matrix, t_size *size)
 		while (y < size->map_y)
 		{
 			if (matrix->field[x][y] == 0)
-				return (0);
+				return (1);
 			y++;
 		}
 		x++;
 	}
-	return (1);
+	return (0);
 }
 
-void			paste_digit(t_matrix *matrix, t_size *size, t_player *player)
+void			paste_digit(t_matrix *matrix, t_size *size, t_player *player, int *pace)
 {
 	int			x;
 	int			y;
@@ -83,53 +83,55 @@ void			paste_digit(t_matrix *matrix, t_size *size, t_player *player)
 	x = 0;
 	while (x < size->map_x)
 	{
-		// dprintf(2, "first while\n");
 		y = 0;
 		while (y < size->map_y)
 		{
-			// dprintf(2, "second while\n");
-			if (matrix->field[x][y] != 0)
+			if (matrix->field[x][y] == (*pace))
 			{
-				// dprintf(2, "is not zero\n");		
-				if (x == 0 && y == 0 && (x + 1 < size->map_x) && ((y + 1 < size->map_y)))
+				if (x == 0 && y == 0 && (x + 1 < size->map_x) && (y + 1 < size->map_y))
 				{
-					// dprintf(2, "%sx = 0, y = 0%s\n", GREEN, RESET);		
-					if (matrix->field[x][y + 1] != 1)
-						matrix->field[x][y + 1] = matrix->field[x][y] + 1;
-					if (matrix->field[x + 1][y] != 1)
-						matrix->field[x + 1][y] = matrix->field[x][y] + 1;
+					if (matrix->field[x][y + 1] == 0)
+						matrix->field[x][y + 1] = (*pace) + 1;
+					if (matrix->field[x + 1][y] == 0)
+						matrix->field[x + 1][y] = (*pace) + 1;
 				}
 				else if (x == 0 && y > 0 && (x + 1 < size->map_x) && ((y + 1 < size->map_y)))
 				{
-					// dprintf(2, "%sx = 0, y > 0%s\n", GREEN, RESET);
-					if (matrix->field[x][y + 1] != 1)
-						matrix->field[x][y + 1] = matrix->field[x][y] + 1;
-					if (matrix->field[x][y - 1] != 1)
-						matrix->field[x][y - 1] = matrix->field[x][y] + 1;
-					if (matrix->field[x + 1][y] != 1)
-						matrix->field[x + 1][y] = matrix->field[x][y] + 1;
+					if (matrix->field[x][y + 1] == 0)
+						matrix->field[x][y + 1] = (*pace) + 1;
+					if (matrix->field[x][y - 1] == 0)
+						matrix->field[x][y - 1] = (*pace) + 1;
+					if (matrix->field[x + 1][y] == 0)
+						matrix->field[x + 1][y] = (*pace) + 1;
 				}
 				else if (x > 0 && y == 0 && (x + 1 < size->map_x) && ((y + 1 < size->map_y)))
 				{
-					// dprintf(2, "%sx > 0, y = 0%s\n", GREEN, RESET);
-					if (matrix->field[x][y + 1] != 1)
-						matrix->field[x][y + 1] = matrix->field[x][y] + 1;
-					if (matrix->field[x - 1][y] != 0)
-						matrix->field[x - 1][y] = matrix->field[x][y] + 1;
-					if (matrix->field[x + 1][y] != 1)
-						matrix->field[x + 1][y] = matrix->field[x][y] + 1;
+					if (matrix->field[x][y + 1] == 0)
+						matrix->field[x][y + 1] = (*pace) + 1;
+					if (matrix->field[x - 1][y] == 0)
+						matrix->field[x - 1][y] = (*pace) + 1;
+					if (matrix->field[x + 1][y] == 0)
+						matrix->field[x + 1][y] = (*pace) + 1;
 				}
 				else if (x > 0 && y > 0 && (x + 1 < size->map_x) && ((y + 1 < size->map_y)))
 				{
-					// dprintf(2, "%sx > 0, y > 0%s\n", GREEN, RESET);		
-					if (matrix->field[x][y + 1] != 1)
-						matrix->field[x][y + 1] = matrix->field[x][y] + 1;
-					if (matrix->field[x][y - 1] != 1)
-						matrix->field[x][y - 1] = matrix->field[x][y] + 1;
-					if (matrix->field[x - 1][y] != 1)
-						matrix->field[x - 1][y] = matrix->field[x][y] + 1;
-					if (matrix->field[x + 1][y] != 1)
-						matrix->field[x + 1][y] = matrix->field[x][y] + 1;
+					if (matrix->field[x][y + 1] == 0)
+						matrix->field[x][y + 1] = (*pace) + 1;
+					if (matrix->field[x][y - 1] == 0)
+						matrix->field[x][y - 1] = (*pace) + 1;
+					if (matrix->field[x - 1][y] == 0)
+						matrix->field[x - 1][y] = (*pace) + 1;
+					if (matrix->field[x + 1][y] == 0)
+						matrix->field[x + 1][y] = (*pace) + 1;
+				}
+				else if (x == (size->map_x - 1) && y == (size->map_y - 2))
+				{
+					if (matrix->field[x][y - 1] == 0)
+						matrix->field[x][y - 1] = (*pace) + 1;
+					if (matrix->field[x - 1][y] == 0)
+						matrix->field[x - 1][y] = (*pace) + 1;
+					if (matrix->field[x][y + 1] == 0)
+						matrix->field[x][y + 1] = (*pace) + 1;
 				}
 			}
 			y++;
@@ -140,8 +142,14 @@ void			paste_digit(t_matrix *matrix, t_size *size, t_player *player)
 
 int				**fill_field(t_matrix *matrix, t_size *size, t_player *player)
 {
-	if (!check_zeros(matrix, size))
-		paste_digit(matrix, size, player);
+	int			pace;
+
+	pace = 1;
+	while (check_zeros(matrix, size))
+	{
+		paste_digit(matrix, size, player, &pace);
+		pace++;
+	}
 	return (matrix->field);
 }
 
