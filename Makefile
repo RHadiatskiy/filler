@@ -32,10 +32,9 @@ LIBFT= -L ./libft/ -lft
 MAIN= ./src/main.c
 
 SRC= ./src/filler_brain.c ./src/filler_free.c \
-	./src/ft_isstrstr.c ./src/filler_initial.c \
+	./src/filler_initial.c ./src/filler_setting_field.c \
 	./src/filler_parsing.c ./src/filler_lists.c \
 	./src/filler_create_field.c ./src/filler_printing.c \
-	./src/filler_setting_field.c
 
 all: $(NAME)
 
