@@ -36,33 +36,35 @@ void			parse_players(char *line, t_player *player)
 	}
 }
 
-void			parse_map_size(char *line, t_size *size)
+void			parse_map_size(char *line, t_matrix *matrix)
 {
-	size->map_x = ft_atoi(&line[7]);
-	size->map_y = ft_atoi(&line[7 + 1 + ft_strlen(ft_itoa(size->map_x))]);
+	matrix->size_map_x = ft_atoi(&line[7]);
+	matrix->size_map_y = ft_atoi(&line[7 + 1 + \
+		ft_strlen(ft_itoa(matrix->size_map_x))]);
 }
 
-void			parse_piece_size(char *line, t_size *size)
+void			parse_piece_size(char *line, t_matrix *matrix)
 {
-	size->piece_height = ft_atoi(&line[5]);
-	size->piece_width = ft_atoi(&line[5 + 1 + ft_strlen(ft_itoa(size->piece_height))]);
+	matrix->size_piece_height = ft_atoi(&line[5]);
+	matrix->size_piece_width = ft_atoi(&line[5 + 1 + \
+		ft_strlen(ft_itoa(matrix->size_piece_height))]);
 }
 
 char			**parse_piece(char *line, char **piece, \
-	t_size *size)
+	t_matrix *matrix)
 {
 	int			x;
 	int			y;
 	int			i;
 
 	x = 0;
-	while (x < size->piece_height && get_next_line(0, &line))
+	while (x < matrix->size_piece_height && get_next_line(0, &line))
 	{
 		if (line[0] == '*' || line[0] == '.')
 		{
 			y = 0;
 			i = 0;
-			while (y < size->piece_width)
+			while (y < matrix->size_piece_width)
 				piece[x][y++] = line[i++];
 		}
 		x++;

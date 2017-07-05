@@ -28,8 +28,7 @@ int				**alocate_field(size_t height, size_t width)
 	return (matrix);
 }
 
-
-int				**init_field(t_matrix *matrix, t_size *size, t_player *player)
+int				**init_field(t_matrix *matrix, t_player *player)
 {
 	int			x;
 	int			y;
@@ -37,12 +36,12 @@ int				**init_field(t_matrix *matrix, t_size *size, t_player *player)
 	int			**field;
 
 	x = 0;
-	field = alocate_field(size->map_x, size->map_y);
+	field = alocate_field(matrix->size_map_x, matrix->size_map_y);
 	enemy = player->symbol == 'O' ? 'X' : 'O';
-	while (x < size->map_x)
+	while (x < matrix->size_map_x)
 	{
 		y = 0;
-		while (y < size->map_y)
+		while (y < matrix->size_map_y)
 		{
 			if (uppersymb(matrix->map[x][y]) == enemy)
 				field[x][y] = 1;
@@ -55,16 +54,16 @@ int				**init_field(t_matrix *matrix, t_size *size, t_player *player)
 	return (field);
 }
 
-int				check_zeros(t_matrix *matrix, t_size *size)
+int				check_zeros(t_matrix *matrix)
 {
 	int			x;
 	int			y;
 
 	x = 0;
-	while (x < size->map_x)
+	while (x < matrix->size_map_x)
 	{
 		y = 0;
-		while (y < size->map_y)
+		while (y < matrix->size_map_y)
 		{
 			if (matrix->field[x][y] == 0)
 				return (1);
@@ -75,103 +74,16 @@ int				check_zeros(t_matrix *matrix, t_size *size)
 	return (0);
 }
 
-void			paste_digit(t_matrix *matrix, t_size *size, t_player *player, int *pace)
-{
-	int			x;
-	int			y;
-
-	x = 0;
-	while (x < size->map_x)
-	{
-		y = 0;
-		while (y < size->map_y)
-		{
-			if (matrix->field[x][y] == (*pace))
-			{
-				if (x == 0 && y == 0 && (x + 1 < size->map_x) && (y + 1 < size->map_y))
-				{
-					if (matrix->field[x][y + 1] == 0)
-						matrix->field[x][y + 1] = (*pace) + 1;
-					if (matrix->field[x + 1][y] == 0)
-						matrix->field[x + 1][y] = (*pace) + 1;
-				}
-				else if (x == 0 && y > 0 && (x + 1 < size->map_x) && ((y + 1 < size->map_y)))
-				{
-					if (matrix->field[x][y + 1] == 0)
-						matrix->field[x][y + 1] = (*pace) + 1;
-					if (matrix->field[x][y - 1] == 0)
-						matrix->field[x][y - 1] = (*pace) + 1;
-					if (matrix->field[x + 1][y] == 0)
-						matrix->field[x + 1][y] = (*pace) + 1;
-				}
-				else if (x > 0 && y == 0 && (x + 1 < size->map_x) && ((y + 1 < size->map_y)))
-				{
-					if (matrix->field[x][y + 1] == 0)
-						matrix->field[x][y + 1] = (*pace) + 1;
-					if (matrix->field[x - 1][y] == 0)
-						matrix->field[x - 1][y] = (*pace) + 1;
-					if (matrix->field[x + 1][y] == 0)
-						matrix->field[x + 1][y] = (*pace) + 1;
-				}
-				else if (x > 0 && y > 0 && (x + 1 < size->map_x) && ((y + 1 < size->map_y)))
-				{
-					if (matrix->field[x][y + 1] == 0)
-						matrix->field[x][y + 1] = (*pace) + 1;
-					if (matrix->field[x][y - 1] == 0)
-						matrix->field[x][y - 1] = (*pace) + 1;
-					if (matrix->field[x - 1][y] == 0)
-						matrix->field[x - 1][y] = (*pace) + 1;
-					if (matrix->field[x + 1][y] == 0)
-						matrix->field[x + 1][y] = (*pace) + 1;
-				}
-				else if (x == (size->map_x - 1) && y == (size->map_y - 2))
-				{
-					if (matrix->field[x][y - 1] == 0)
-						matrix->field[x][y - 1] = (*pace) + 1;
-					if (matrix->field[x - 1][y] == 0)
-						matrix->field[x - 1][y] = (*pace) + 1;
-					if (matrix->field[x][y + 1] == 0)
-						matrix->field[x][y + 1] = (*pace) + 1;
-				}
-			}
-			y++;
-		}
-		x++;
-	}
-}
-
-int				**set_cell_of_field(t_matrix *matrix, t_size *size, t_player *player)
+int				**set_cell_of_field(t_matrix *matrix, t_player *player)
 {
 	int			pace;
 
 	pace = 1;
-	matrix->field = init_field(matrix, size, player);
-	while (check_zeros(matrix, size))
+	matrix->field = init_field(matrix, player);
+	while (check_zeros(matrix))
 	{
-		paste_digit(matrix, size, player, &pace);
+		paste_digit(matrix, player, &pace);
 		pace++;
 	}
 	return (matrix->field);
-}
-
-void			print_field(int **matrix, t_size *size)
-{
-	int			i;
-	int			j;
-
-	i = 0;
-	dprintf(2, "\n");
-	while (i < size->map_x)
-	{
-		j = 0;
-		while (j < size->map_y)
-		{
-			if (matrix[i][j] == 1)
-				dprintf(2, "%s%3d%s", RED, matrix[i][j++], RESET);
-			else
-				dprintf(2, "%3d", matrix[i][j++]);
-		}
-		dprintf(2, "\n");
-		i++;
-	}
 }

@@ -12,19 +12,6 @@
 
 #include "../include/filler.h"
 
-t_size			*initial_size(void)
-{
-	t_size		*size;
-
-	if (!(size = (t_size *)malloc(sizeof(t_size))))
-		return (NULL);
-	size->piece_height = 0;
-	size->piece_width = 0;
-	size->map_x = 0;
-	size->map_y = 0;
-	return (size);
-}
-
 t_player		*initial_player(void)
 {
 	t_player		*player;
@@ -46,6 +33,10 @@ t_matrix		*initial_matrix(void)
 	matrix->map = NULL;
 	matrix->field = 0;
 	matrix->piece = NULL;
+	matrix->size_map_x = 0;
+	matrix->size_map_y = 0;
+	matrix->size_piece_height = 0;
+	matrix->size_piece_width = 0;
 	return (matrix);
 }
 
