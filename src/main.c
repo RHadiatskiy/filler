@@ -12,42 +12,6 @@
 
 #include "../include/filler.h"
 
-char			uppersymb(char symbol)
-{
-	if (symbol == 'x' || symbol == 'o')
-		return (symbol - 32);
-	else
-		return (symbol);
-}
-
-int				ft_isstrstr(char *big, char *little)
-{
-	int			i;
-	int			j;
-	int			len;
-
-	i = 0;
-	while (big[i])
-	{
-		len = 0;
-		j = 0;
-		if (big[i] == little[j])
-		{
-			while (big[i] == little[j] && little[j])
-			{
-				i++;
-				j++;
-				len++;
-			}
-			if (len == ft_strlen(little))
-				return (1);
-		}
-		else
-			i++;
-	}
-	return (0);
-}
-
 char			**alocate_matrix(size_t height, size_t width)
 {
 	char		**matrix;
@@ -90,6 +54,26 @@ char			**reading_create_map(char **matrix, char *line, t_matrix *size)
 	return (matrix);
 }
 
+static void		main_func_extension_one(t_matrix *matrix, char *line, \
+	t_player *player)
+{
+	parse_map_size(line, matrix);
+	matrix->map = reading_create_map(alocate_matrix(\
+		matrix->size_map_x, matrix->size_map_y), line, matrix);
+	matrix->field = set_cell_of_field(matrix, player);
+	print_field(matrix->field, matrix);
+}
+
+static void		main_func_extension_two(t_matrix *matrix, char *line, \
+	t_player *player)
+{
+	parse_piece_size(line, matrix);
+	matrix->piece = parse_piece(line, alocate_matrix(\
+		matrix->size_piece_height, matrix->size_piece_width), matrix);
+	filler_algorithm(matrix, player);
+	matrix_free(matrix);
+}
+
 int				main(void)
 {
 	t_player		*player;
@@ -103,21 +87,9 @@ int				main(void)
 		if (ft_isstrstr(line, "exec p1") || ft_isstrstr(line, "exec p2"))
 			parse_players(line, player);
 		if (ft_isstrstr(line, "Plateau"))
-		{
-			parse_map_size(line, matrix);
-			matrix->map = reading_create_map(alocate_matrix(\
-				matrix->size_map_x, matrix->size_map_y), line, matrix);
-			matrix->field = set_cell_of_field(matrix, player);
-			print_field(matrix->field, matrix);
-		}
+			main_func_extension_one(matrix, line, player);
 		if (ft_isstrstr(line, "Piece"))
-		{
-			parse_piece_size(line, matrix);
-			matrix->piece = parse_piece(line, alocate_matrix(\
-				matrix->size_piece_height, matrix->size_piece_width), matrix);
-			filler_algorithm(matrix, player);
-			matrix_free(matrix);
-		}
+			main_func_extension_two(matrix, line, player);
 	}
 	free(matrix);
 	free(player);
