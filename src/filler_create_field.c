@@ -140,11 +140,12 @@ void			paste_digit(t_matrix *matrix, t_size *size, t_player *player, int *pace)
 	}
 }
 
-int				**fill_field(t_matrix *matrix, t_size *size, t_player *player)
+int				**set_cell_of_field(t_matrix *matrix, t_size *size, t_player *player)
 {
 	int			pace;
 
 	pace = 1;
+	matrix->field = init_field(matrix, size, player);
 	while (check_zeros(matrix, size))
 	{
 		paste_digit(matrix, size, player, &pace);

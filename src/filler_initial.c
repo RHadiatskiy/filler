@@ -61,11 +61,3 @@ t_get_coord		*initial_get_coord_list(void)
 	initial->next = NULL;
 	return (initial);
 }
-
-void			filler_initial(t_matrix *matrix, t_size *size, \
-	t_player *player)
-{
-	size = initial_size();
-	player = initial_player();
-	matrix = initial_matrix();
-}

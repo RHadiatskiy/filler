@@ -12,9 +12,6 @@
 
 #include "../include/filler.h"
 
-int				check_zeros(t_matrix *matrix, t_size *size);
-
-
 void			matrix_free(t_matrix *matrix, t_size *size)
 {
 	size_t		x;
@@ -65,11 +62,11 @@ int				check_sum(t_matrix *matrix, size_t x, size_t y, t_size *size)
 		}
 		i++;
 	}
-	dprintf(2, "\n\n%sSUM : %d%s\n\n", YELLOW, sum, RESET);
 	return (sum);
 }
 
-void			choose_coord(t_matrix *matrix, t_get_coord *get_coord, t_size *size)
+void			choose_coord(t_matrix *matrix, t_get_coord *get_coord, \
+	t_size *size)
 {
 	t_get_coord	*tmp;
 	int			sum;
@@ -79,7 +76,6 @@ void			choose_coord(t_matrix *matrix, t_get_coord *get_coord, t_size *size)
 	x = get_coord->x;
 	y = get_coord->y;
 	sum = check_sum(matrix, x, y, size);
-	dprintf(2, "\n\n%sSUMMA : %d%s\n\n", RED, sum, RESET);	
 	tmp = get_coord;
 	while (tmp->next)
 	{
@@ -90,8 +86,8 @@ void			choose_coord(t_matrix *matrix, t_get_coord *get_coord, t_size *size)
 		}
 		tmp = tmp->next;
 	}
-	dprintf(2, "\n\n%sX : %jd%s\n", YELLOW, x, RESET);
-	dprintf(2, "%sY : %jd%s\n\n", YELLOW, y, RESET);
+	// dprintf(2, "\n\n%sX : %jd%s\n", YELLOW, x, RESET);
+	// dprintf(2, "%sY : %jd%s\n\n", YELLOW, y, RESET);
 	print_coordinats(x, y);
 }
 
@@ -179,7 +175,8 @@ int				check_enemy(t_matrix *matrix, int x, int y, char enemy, t_size *size)
 		j = 0;
 		while (j < size->piece_width)
 		{
-			if (((uppersymb(matrix->map[x + i][y + j]) == enemy) && matrix->piece[i][j] == '*'))
+			if (((uppersymb(matrix->map[x + i][y + j]) == enemy) && \
+				matrix->piece[i][j] == '*'))
 				return (0);
 			j++;
 		}
@@ -188,7 +185,8 @@ int				check_enemy(t_matrix *matrix, int x, int y, char enemy, t_size *size)
 	return (1);
 }
 
-int				check_connect(t_matrix *matrix, int x, int y, t_player *player, t_size *size)
+int				check_connect(t_matrix *matrix, int x, int y, \
+	t_player *player, t_size *size)
 {
 	int			overlap;
 	size_t		i;
@@ -203,7 +201,8 @@ int				check_connect(t_matrix *matrix, int x, int y, t_player *player, t_size *s
 		j = 0;
 		while (j < size->piece_width)
 		{
-			if (((uppersymb(matrix->map[x + i][y + j]) == player->symbol) && matrix->piece[i][j] == '*') && \
+			if (((uppersymb(matrix->map[x + i][y + j]) == player->symbol) \
+				&& matrix->piece[i][j] == '*') && \
 				check_enemy(matrix, x, y, enemy, size))
 				overlap++;
 			j++;
@@ -221,6 +220,7 @@ t_get_coord		*filler_algorithm(t_matrix *matrix, t_size *size, t_player *player)
 
 	get_coord = initial_get_coord_list();
 	x = 0;
+	player->symbol = player->first == 1 ? 'O' : 'X';
 	while (x <= (size->map_x - size->piece_height))
 	{
 		y = 0;
@@ -264,19 +264,14 @@ int				main(void)
 		if (ft_isstrstr(line, "Plateau"))
 		{
 			parse_map_size(line, size);
-			matrix->map = alocate_matrix(size->map_x, size->map_y);
-			matrix->map = reading_create_map(matrix->map, line, size);
-			matrix->field = init_field(matrix, size, player);
-			matrix->field = fill_field(matrix, size, player);
+			matrix->map = reading_create_map(alocate_matrix(size->map_x, size->map_y), line, size);
+			matrix->field = set_cell_of_field(matrix, size, player);
 			print_field(matrix->field, size);
-			dprintf(2, "RET : %d\n", check_zeros(matrix, size));
 		}
 		if (ft_isstrstr(line, "Piece"))
 		{
 			parse_piece_size(line, size);
-			matrix->piece = alocate_matrix(size->piece_height, size->piece_width);
-			matrix->piece = parse_piece(line, matrix->piece, size);
-			player->symbol = player->first == 1 ? 'O' : 'X';
+			matrix->piece = parse_piece(line, alocate_matrix(size->piece_height, size->piece_width), size);
 			get_coord = filler_algorithm(matrix, size, player);
 			matrix_free(matrix, size);
 		}

@@ -55,21 +55,20 @@ typedef struct	s_get_coord
 	struct s_get_coord	*next;
 }				t_get_coord;
 
-int				ft_isstrstr(char *big, char *little);
 t_size			*initial_size(void);
 t_player		*initial_player(void);
 t_matrix		*initial_matrix(void);
+t_get_coord		*initial_get_coord_list(void);
+
+int				ft_isstrstr(char *big, char *little);
 char			**alocate_matrix(size_t height, size_t width);
 char			**reading_create_map(char **matrix, char *line, t_size *size);
 void			parse_map_size(char *line, t_size *size);
 void			parse_piece_size(char *line, t_size *size);
 void			parse_players(char *line, t_player *player);
 char			**parse_piece(char *line, char **piece, t_size *size);
-void			filler_initial(t_matrix *matrix, t_size *map_size, \
-	t_player *player);
 t_matrix		*filler_parsing(t_matrix *matrix, t_size *size, \
 	t_player *player);
-t_get_coord		*initial_get_coord_list(void);
 void			coord_list_added(t_get_coord *list, size_t x, size_t y);
 void			print_coord_list(t_get_coord *get_coord);
 void			matrix_free(t_matrix *matrix, t_size *size);
@@ -78,7 +77,7 @@ char			uppersymb(char symbol);
 int				**alocate_field(size_t height, size_t width);
 int				**init_field(t_matrix *matrix, t_size *size, t_player *player);
 void			paste_digit(t_matrix *matrix, t_size *size, t_player *player, int *pace);
-int				**fill_field(t_matrix *matrix, t_size *size, t_player *player);
+int				**set_cell_of_field(t_matrix *matrix, t_size *size, t_player *player);
 void			print_field(int **matrix, t_size *size);
 
 #endif
