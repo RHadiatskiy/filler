@@ -5,12 +5,22 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rhadiats <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/06/13 19:39:36 by rhadiats          #+#    #+#             */
-/*   Updated: 2017/06/13 19:39:37 by rhadiats         ###   ########.fr       */
+/*   Created: 2017/07/06 13:19:50 by rhadiats          #+#    #+#             */
+/*   Updated: 2017/07/06 13:19:52 by rhadiats         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/filler.h"
+#include "../include/visualize.h"
+
+void			map_free(t_matrix *matrix)
+{
+	if (matrix->map)
+	{
+		while (matrix->size_map_x)
+			free(matrix->map[matrix->size_map_x--]);
+		free(matrix->map);
+	}
+}
 
 char			**alocate_matrix(size_t height, size_t width)
 {
@@ -54,44 +64,59 @@ char			**reading_create_map(char **matrix, char *line, t_matrix *size)
 	return (matrix);
 }
 
-static void		filler_creating_map_extension(t_matrix *matrix, char *line, \
-	t_player *player)
+void			print_map(char **map, t_player *player)
 {
-	parse_map_size(line, matrix);
-	matrix->map = reading_create_map(alocate_matrix(\
-		matrix->size_map_x, matrix->size_map_y), line, matrix);
-	matrix->field = set_cell_of_field(matrix, player);
-	// print_field(matrix->field, matrix);
-}
+	int			i;
+	int			j;
+	char		filler;
 
-static void		filler_creating_piece_extension(t_matrix *matrix, char *line, \
-	t_player *player)
-{
-	parse_piece_size(line, matrix);
-	matrix->piece = parse_piece(line, alocate_matrix(\
-		matrix->size_piece_height, matrix->size_piece_width), matrix);
-	filler_algorithm(matrix, player);
-	matrix_free(matrix);
+	i = 0;
+	filler = player->first == 1 ? 'O' : 'X';
+	dprintf(2, "\n");
+	while (map[i])
+	{
+		j = 0;
+		while (map[i][j])
+		{
+			if (uppersymb(map[i][j]) == filler)
+				dprintf(2, "%s%c%s", GREEN, map[i][j++], RESET);
+			else if (map[i][j] == '.')
+				dprintf(2, "%s%c%s", WHITE, map[i][j++], RESET);
+			else
+				dprintf(2, "%s%c%s", RED, map[i][j++], RESET);
+		}
+		dprintf(2, "\n");
+		i++;
+	}
 }
 
 int				main(void)
 {
-	t_player		*player;
 	t_matrix		*matrix;
+	t_player		*player;
 	char			*line;
 
-	player = initial_player();
 	matrix = initial_matrix();
+	player = initial_player();
 	while (get_next_line(0, &line) > 0)
 	{
 		if (ft_isstrstr(line, "exec p1") || ft_isstrstr(line, "exec p2"))
 			parse_players(line, player);
 		if (ft_isstrstr(line, "Plateau"))
-			filler_creating_map_extension(matrix, line, player);
-		if (ft_isstrstr(line, "Piece"))
-			filler_creating_piece_extension(matrix, line, player);
+		{
+			parse_map_size(line, matrix);
+			matrix->map = reading_create_map(alocate_matrix(\
+			matrix->size_map_x, matrix->size_map_y), line, matrix);
+			print_map(matrix->map, player);
+			map_free(matrix);
+		}
+		if (ft_isstrstr(line, "=="))
+			parse_result(line, player);
 	}
+	dprintf(2, "\n%sFILLER :\t%jd%s\n%sENEMY :\t\t%jd%s\n\n", GREEN, \
+		player->res_filler, RESET, RED, player->res_enemy, RESET);
+	dprintf(2, "\n\n%sWINNER IS %s!%s\n\n", GREEN, \
+		player->res_filler > player->res_enemy ? "FILLER" : "ENEMY", RESET);
 	free(matrix);
 	free(player);
-	return (0);
 }

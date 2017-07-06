@@ -53,6 +53,8 @@ typedef struct	s_player
 	unsigned int		first : 1;
 	unsigned int		second : 1;
 	char				symbol;
+	size_t				enemy_last_x;
+	size_t				enemy_last_y;
 }				t_player;
 
 /*
@@ -88,13 +90,14 @@ void			parse_map_size(char *line, t_matrix *matrix);
 void			parse_piece_size(char *line, t_matrix *matrix);
 void			parse_players(char *line, t_player *player);
 char			**parse_piece(char *line, char **piece, t_matrix *matrix);
-void			paste_digit(t_matrix *matrix, t_player *player, int *pace);
+void			parse_last_pace_of_enemy(char *line, t_player *player);
 
 int				ft_isstrstr(char *big, char *little);
 char			uppersymb(char symbol);
 
 char			**reading_create_map(char **matrix, char *line, t_matrix *size);
 void			coord_list_added(t_get_coord *list, size_t x, size_t y);
+void			paste_digit(t_matrix *matrix, t_player *player, int *pace);
 int				**set_cell_of_field(t_matrix *matrix, t_player *player);
 
 void			matrix_free(t_matrix *matrix);
