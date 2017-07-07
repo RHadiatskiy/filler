@@ -34,5 +34,6 @@ t_player		*initial_player(void)
 	player->second = 0;
 	player->res_filler = 0;
 	player->res_enemy = 0;
+	player->flag = 0;
 	return (player);
 }

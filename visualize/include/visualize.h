@@ -42,6 +42,7 @@ typedef struct	s_player
 	unsigned int		second : 1;
 	size_t				res_filler;
 	size_t				res_enemy;
+	int					flag : 1;
 }				t_player;
 
 int				ft_isstrstr(char *big, char *little);

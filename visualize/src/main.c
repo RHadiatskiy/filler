@@ -90,6 +90,16 @@ void			print_map(char **map, t_player *player)
 	}
 }
 
+void			visualize_printing_map_extension(char *line, t_matrix *matrix, \
+	t_player *player)
+{
+	parse_map_size(line, matrix);
+	matrix->map = reading_create_map(alocate_matrix(\
+	matrix->size_map_x, matrix->size_map_y), line, matrix);
+	print_map(matrix->map, player);
+	map_free(matrix);
+}
+
 int				main(void)
 {
 	t_matrix		*matrix;
@@ -103,19 +113,13 @@ int				main(void)
 		if (ft_isstrstr(line, "exec p1") || ft_isstrstr(line, "exec p2"))
 			parse_players(line, player);
 		if (ft_isstrstr(line, "Plateau"))
-		{
-			parse_map_size(line, matrix);
-			matrix->map = reading_create_map(alocate_matrix(\
-			matrix->size_map_x, matrix->size_map_y), line, matrix);
-			print_map(matrix->map, player);
-			map_free(matrix);
-		}
+			visualize_printing_map_extension(line, matrix, player);
 		if (ft_isstrstr(line, "=="))
 			parse_result(line, player);
 	}
-	dprintf(2, "\n%sFILLER :\t%jd%s\n%sENEMY :\t\t%jd%s\n\n", GREEN, \
+	dprintf(2, "\nTOTAL:\n%sFILLER :\t%jd%s\n%sENEMY :\t\t%jd%s\n\n", GREEN, \
 		player->res_filler, RESET, RED, player->res_enemy, RESET);
-	dprintf(2, "\n\n%sWINNER IS %s!%s\n\n", GREEN, \
+	dprintf(2, "\n%sWINNER IS %s!%s\n\n", GREEN, \
 		player->res_filler > player->res_enemy ? "FILLER" : "ENEMY", RESET);
 	free(matrix);
 	free(player);

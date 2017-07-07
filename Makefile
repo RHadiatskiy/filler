@@ -25,11 +25,13 @@ RESET = "\x1b[0m"
 # ==================
 
 NAME=filler
+VISUALIZE=./visualize/visualize
 
 CC= gcc -o
 CFLAGS= 
 LIBFT= -L ./libft/ -lft
 MAIN= ./src/main.c
+MAIN_VISUALIZE = ./visualize/src/main.c
 
 SRC= ./src/filler_brain.c ./src/filler_free.c \
 	./src/filler_initial.c ./src/filler_setting_field.c \
@@ -37,18 +39,25 @@ SRC= ./src/filler_brain.c ./src/filler_free.c \
 	./src/filler_create_field.c ./src/filler_printing.c \
 	./src/filler_addition_func.c
 
+SRC_VISUALIZE = ./visualize/src/visualize_addition_func.c \
+				./visualize/src/visualize_initial.c \
+				./visualize/src/visualize_parsing.c
+
 all: $(NAME)
 
 $(NAME):
 	@make -C libft
 	@$(CC) $(NAME) $(CFLAGS) $(MAIN) $(SRC) $(LIBFT)
-	@echo $(GREEN)"\tFILLER IS COMPILED"$(RESET)
+	@$(CC) $(VISUALIZE) $(CFLAGS) $(MAIN_VISUALIZE) $(SRC_VISUALIZE) $(LIBFT)
+	@echo $(GREEN)"\tFILLER IS COMPILED"
 
 clean:
 	@make -C libft fclean
-	@echo $(RED)"\tFILLER IS CLEANED"$(RESET)
+	@echo $(RED)"\tFILLER IS CLEANED"
 
 fclean: clean
 	@rm $(NAME)
+	@rm $(VISUALIZE)
+	@rm filler.trace
 
 re: fclean all
