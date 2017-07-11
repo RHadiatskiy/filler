@@ -30,6 +30,7 @@ VISUALIZE=./visualize/visualize
 CC= gcc -o
 CFLAGS= 
 LIBFT= -L ./libft/ -lft
+LIBPRINTF= ./src/ft_printf/libftprintf.a
 MAIN= ./src/main.c
 MAIN_VISUALIZE = ./visualize/src/main.c
 
@@ -47,17 +48,18 @@ all: $(NAME)
 
 $(NAME):
 	@make -C libft
-	@$(CC) $(NAME) $(CFLAGS) $(MAIN) $(SRC) $(LIBFT)
-	@$(CC) $(VISUALIZE) $(CFLAGS) $(MAIN_VISUALIZE) $(SRC_VISUALIZE) $(LIBFT)
+	@make -C ./src/ft_printf
+	@$(CC) $(NAME) $(CFLAGS) $(MAIN) $(SRC) $(LIBFT) $(LIBPRINTF)
+	@$(CC) $(VISUALIZE) $(CFLAGS) $(MAIN_VISUALIZE) $(SRC_VISUALIZE) $(LIBFT) $(LIBPRINTF)
 	@echo $(GREEN)"\tFILLER IS COMPILED"
 
 clean:
 	@make -C libft fclean
+	@make -C ./src/ft_printf fclean
 	@echo $(RED)"\tFILLER IS CLEANED"
 
 fclean: clean
 	@rm $(NAME)
 	@rm $(VISUALIZE)
-	@rm filler.trace
 
 re: fclean all

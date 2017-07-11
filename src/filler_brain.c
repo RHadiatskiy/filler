@@ -54,8 +54,6 @@ void			choose_coord(t_matrix *matrix, t_get_coord *get_coord)
 		}
 		tmp = tmp->next;
 	}
-	// dprintf(2, "\n\n%sX : %jd%s\n", YELLOW, x, RESET);
-	// dprintf(2, "%sY : %jd%s\n\n", YELLOW, y, RESET);
 	print_coordinats(x, y);
 }
 
@@ -128,5 +126,5 @@ void			filler_algorithm(t_matrix *matrix, t_player *player)
 		x++;
 	}
 	choose_coord(matrix, get_coord);
-	// print_coord_list(get_coord);
+	coordinats_free(&get_coord);
 }

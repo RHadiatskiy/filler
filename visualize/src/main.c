@@ -72,7 +72,7 @@ void			print_map(char **map, t_player *player)
 
 	i = 0;
 	filler = player->first == 1 ? 'O' : 'X';
-	dprintf(2, "\n");
+	dprintf(2, "\n\n\n");
 	while (map[i])
 	{
 		j = 0;
@@ -117,9 +117,9 @@ int				main(void)
 		if (ft_isstrstr(line, "=="))
 			parse_result(line, player);
 	}
-	dprintf(2, "\nTOTAL:\n%sFILLER :\t%jd%s\n%sENEMY :\t\t%jd%s\n\n", GREEN, \
+	ft_printf("\nTOTAL:\n%sFILLER :\t%jd%s\n%sENEMY :\t\t%jd%s\n\n", GREEN, \
 		player->res_filler, RESET, RED, player->res_enemy, RESET);
-	dprintf(2, "\n%sWINNER IS %s!%s\n\n", GREEN, \
+	ft_printf("\n%sWINNER IS %s!%s\n\n", GREEN, \
 		player->res_filler > player->res_enemy ? "FILLER" : "ENEMY", RESET);
 	free(matrix);
 	free(player);

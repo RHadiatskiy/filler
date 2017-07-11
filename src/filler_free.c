@@ -34,3 +34,20 @@ void			matrix_free(t_matrix *matrix)
 		free(matrix->piece);
 	}
 }
+
+void			coordinats_free(t_get_coord **get_coord)
+{
+	t_get_coord *prev;
+
+	prev = NULL;
+	while ((*get_coord)->next)
+	{
+		prev = (*get_coord);
+		(*get_coord) = (*get_coord)->next;
+		prev->x = 0;
+		prev->y = 0;
+		prev->n = 0;
+		free(prev);
+	}
+	free((*get_coord));
+}

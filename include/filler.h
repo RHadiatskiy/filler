@@ -101,6 +101,8 @@ void			paste_digit(t_matrix *matrix, t_player *player, int *pace);
 int				**set_cell_of_field(t_matrix *matrix, t_player *player);
 
 void			matrix_free(t_matrix *matrix);
+void			coordinats_free(t_get_coord **get_coord);
 void			filler_algorithm(t_matrix *matrix, t_player *player);
+int				ft_printf(const char *format, ...);
 
 #endif
