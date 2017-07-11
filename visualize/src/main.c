@@ -72,20 +72,20 @@ void			print_map(char **map, t_player *player)
 
 	i = 0;
 	filler = player->first == 1 ? 'O' : 'X';
-	dprintf(2, "\n\n\n");
+	ft_printf("\n\033[6;0H");
 	while (map[i])
 	{
 		j = 0;
 		while (map[i][j])
 		{
 			if (uppersymb(map[i][j]) == filler)
-				dprintf(2, "%s%c%s", GREEN, map[i][j++], RESET);
+				ft_printf("%s%c%s", GREEN, map[i][j++], RESET);
 			else if (map[i][j] == '.')
-				dprintf(2, "%s%c%s", WHITE, map[i][j++], RESET);
+				ft_printf("%s%c%s", WHITE, map[i][j++], RESET);
 			else
-				dprintf(2, "%s%c%s", RED, map[i][j++], RESET);
+				ft_printf("%s%c%s", RED, map[i][j++], RESET);
 		}
-		dprintf(2, "\n");
+		ft_printf("\n");
 		i++;
 	}
 }
@@ -117,10 +117,12 @@ int				main(void)
 		if (ft_isstrstr(line, "=="))
 			parse_result(line, player);
 	}
-	ft_printf("\nTOTAL:\n%sFILLER :\t%jd%s\n%sENEMY :\t\t%jd%s\n\n", GREEN, \
+	ft_printf("\n%sFILLER :\t%jd%s\n%sENEMY :\t\t%jd%s\n\n", GREEN, \
 		player->res_filler, RESET, RED, player->res_enemy, RESET);
-	ft_printf("\n%sWINNER IS %s!%s\n\n", GREEN, \
-		player->res_filler > player->res_enemy ? "FILLER" : "ENEMY", RESET);
+	if (player->res_filler > player->res_enemy)
+		ft_printf("\n%sWINNER IS %s!%s\n\n", GREEN, "FILLER", RESET);
+	else
+		ft_printf("\n%sWINNER IS %s!%s\n\n", RED, "ENEMY", RESET);
 	free(matrix);
 	free(player);
 }
