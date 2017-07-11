@@ -15,7 +15,7 @@
 char			**alocate_matrix(size_t height, size_t width)
 {
 	char		**matrix;
-	int			j;
+	size_t		j;
 
 	j = 0;
 	if (!(matrix = (char **)malloc(sizeof(char *) * height + 1)))
@@ -32,9 +32,9 @@ char			**alocate_matrix(size_t height, size_t width)
 
 char			**reading_create_map(char **matrix, char *line, t_matrix *size)
 {
-	int			x;
-	int			y;
-	int			i;
+	size_t		x;
+	size_t		y;
+	size_t		i;
 
 	x = 0;
 	while (x < size->size_map_x && get_next_line(0, &line))

@@ -22,8 +22,8 @@ void			print_coordinats(size_t x, size_t y)
 
 void			print_field(int **matrix, t_matrix *size)
 {
-	int			i;
-	int			j;
+	size_t		i;
+	size_t		j;
 
 	i = 0;
 	dprintf(2, "\n");
@@ -44,8 +44,8 @@ void			print_field(int **matrix, t_matrix *size)
 
 void			print_maxtrix(char **matrix)
 {
-	int			i;
-	int			j;
+	size_t		i;
+	size_t		j;
 
 	i = 0;
 	dprintf(2, "\n");

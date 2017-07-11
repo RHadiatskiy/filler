@@ -15,7 +15,7 @@
 int				**alocate_field(size_t height, size_t width)
 {
 	int			**matrix;
-	int			j;
+	size_t		j;
 
 	j = 0;
 	if (!(matrix = (int **)malloc(sizeof(int *) * height)))
@@ -30,8 +30,8 @@ int				**alocate_field(size_t height, size_t width)
 
 int				**init_field(t_matrix *matrix, t_player *player)
 {
-	int			x;
-	int			y;
+	size_t		x;
+	size_t		y;
 	char		enemy;
 	int			**field;
 
@@ -56,8 +56,8 @@ int				**init_field(t_matrix *matrix, t_player *player)
 
 int				check_zeros(t_matrix *matrix)
 {
-	int			x;
-	int			y;
+	size_t		x;
+	size_t		y;
 
 	x = 0;
 	while (x < matrix->size_map_x)
@@ -76,13 +76,13 @@ int				check_zeros(t_matrix *matrix)
 
 int				**set_cell_of_field(t_matrix *matrix, t_player *player)
 {
-	int			pace;
+	size_t		pace;
 
 	pace = 1;
 	matrix->field = init_field(matrix, player);
 	while (check_zeros(matrix))
 	{
-		paste_digit(matrix, player, &pace);
+		paste_digit(matrix, &pace);
 		pace++;
 	}
 	return (matrix->field);

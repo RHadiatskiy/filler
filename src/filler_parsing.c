@@ -53,9 +53,9 @@ void			parse_piece_size(char *line, t_matrix *matrix)
 char			**parse_piece(char *line, char **piece, \
 	t_matrix *matrix)
 {
-	int			x;
-	int			y;
-	int			i;
+	size_t		x;
+	size_t		y;
+	size_t		i;
 
 	x = 0;
 	while (x < matrix->size_piece_height && get_next_line(0, &line))

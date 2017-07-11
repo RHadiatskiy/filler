@@ -12,8 +12,8 @@
 
 #include "../include/filler.h"
 
-static void			paste_digit_extension_func(t_matrix *matrix, int *x, \
-	int *y, int *pace)
+static void			paste_digit_extension_func(t_matrix *matrix, size_t *x, \
+	size_t *y, size_t *pace)
 {
 	if (((*x) + 1 < matrix->size_map_x) && (((*y) + 1 < matrix->size_map_y)))
 	{
@@ -38,10 +38,10 @@ static void			paste_digit_extension_func(t_matrix *matrix, int *x, \
 	}
 }
 
-void				paste_digit(t_matrix *matrix, t_player *player, int *pace)
+void				paste_digit(t_matrix *matrix, size_t *pace)
 {
-	int			x;
-	int			y;
+	size_t			x;
+	size_t			y;
 
 	x = 0;
 	while (x < matrix->size_map_x)
@@ -49,7 +49,7 @@ void				paste_digit(t_matrix *matrix, t_player *player, int *pace)
 		y = 0;
 		while (y < matrix->size_map_y)
 		{
-			if (matrix->field[x][y] == (*pace))
+			if (matrix->field[x][y] == (int)(*pace))
 				paste_digit_extension_func(matrix, &x, &y, pace);
 			y++;
 		}

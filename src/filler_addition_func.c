@@ -22,9 +22,9 @@ char			uppersymb(char symbol)
 
 int				ft_isstrstr(char *big, char *little)
 {
-	int			i;
-	int			j;
-	int			len;
+	size_t		i;
+	size_t		j;
+	size_t		len;
 
 	i = 0;
 	while (big[i])

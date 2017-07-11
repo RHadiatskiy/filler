@@ -14,8 +14,8 @@
 
 int				check_sum(t_matrix *matrix, size_t x, size_t y)
 {
-	int			i;
-	int			j;
+	size_t		i;
+	size_t		j;
 	int			sum;
 
 	i = 0;
@@ -57,10 +57,10 @@ void			choose_coord(t_matrix *matrix, t_get_coord *get_coord)
 	print_coordinats(x, y);
 }
 
-int				check_enemy(t_matrix *matrix, int x, int y, char enemy)
+int				check_enemy(t_matrix *matrix, size_t x, size_t y, char enemy)
 {
-	int			i;
-	int			j;
+	size_t		i;
+	size_t		j;
 
 	i = 0;
 	while (i < matrix->size_piece_height)
@@ -78,7 +78,7 @@ int				check_enemy(t_matrix *matrix, int x, int y, char enemy)
 	return (1);
 }
 
-int				check_connect(t_matrix *matrix, int x, int y, \
+int				check_connect(t_matrix *matrix, size_t x, size_t y, \
 	t_player *player)
 {
 	int			overlap;

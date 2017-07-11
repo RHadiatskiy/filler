@@ -28,7 +28,7 @@ NAME=filler
 VISUALIZE=./visualize/visualize
 
 CC= gcc -o
-CFLAGS= 
+CFLAGS= -Wall -Wextra -Werror
 LIBFT= -L ./libft/ -lft
 LIBPRINTF= ./src/ft_printf/libftprintf.a
 MAIN= ./src/main.c

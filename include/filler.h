@@ -97,7 +97,7 @@ char			uppersymb(char symbol);
 
 char			**reading_create_map(char **matrix, char *line, t_matrix *size);
 void			coord_list_added(t_get_coord *list, size_t x, size_t y);
-void			paste_digit(t_matrix *matrix, t_player *player, int *pace);
+void			paste_digit(t_matrix *matrix, size_t *pace);
 int				**set_cell_of_field(t_matrix *matrix, t_player *player);
 
 void			matrix_free(t_matrix *matrix);
