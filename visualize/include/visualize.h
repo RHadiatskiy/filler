@@ -56,6 +56,7 @@ void			parse_result(char *line, t_player *player);
 char			**alocate_matrix(size_t height, size_t width);
 char			**reading_create_map(char **matrix, char *line, t_matrix *size);
 void			print_map(char **map, t_player *player);
+void			print_result(t_player *player);
 void			map_free(t_matrix *matrix);
 int				ft_printf(const char *format, ...);
 

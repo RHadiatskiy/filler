@@ -25,7 +25,7 @@ void			map_free(t_matrix *matrix)
 char			**alocate_matrix(size_t height, size_t width)
 {
 	char		**matrix;
-	size_t		j;
+	int			j;
 
 	j = 0;
 	if (!(matrix = (char **)malloc(sizeof(char *) * height + 1)))
@@ -42,9 +42,9 @@ char			**alocate_matrix(size_t height, size_t width)
 
 char			**reading_create_map(char **matrix, char *line, t_matrix *size)
 {
-	size_t		x;
-	size_t		y;
-	size_t		i;
+	int			x;
+	int			y;
+	int			i;
 
 	x = 0;
 	while (x < size->size_map_x && get_next_line(0, &line))
@@ -64,14 +64,30 @@ char			**reading_create_map(char **matrix, char *line, t_matrix *size)
 	return (matrix);
 }
 
-void			visualize_printing_map_extension(char *line, t_matrix *matrix, \
-	t_player *player)
+void			print_map(char **map, t_player *player)
 {
-	parse_map_size(line, matrix);
-	matrix->map = reading_create_map(alocate_matrix(\
-	matrix->size_map_x, matrix->size_map_y), line, matrix);
-	print_map(matrix->map, player);
-	map_free(matrix);
+	int			i;
+	int			j;
+	char		filler;
+
+	i = 0;
+	filler = player->first == 1 ? 'O' : 'X';
+	dprintf(2, "\n");
+	while (map[i])
+	{
+		j = 0;
+		while (map[i][j])
+		{
+			if (uppersymb(map[i][j]) == filler)
+				dprintf(2, "%s%c%s", GREEN, map[i][j++], RESET);
+			else if (map[i][j] == '.')
+				dprintf(2, "%s%c%s", WHITE, map[i][j++], RESET);
+			else
+				dprintf(2, "%s%c%s", RED, map[i][j++], RESET);
+		}
+		dprintf(2, "\n");
+		i++;
+	}
 }
 
 int				main(void)
@@ -87,11 +103,20 @@ int				main(void)
 		if (ft_isstrstr(line, "exec p1") || ft_isstrstr(line, "exec p2"))
 			parse_players(line, player);
 		if (ft_isstrstr(line, "Plateau"))
-			visualize_printing_map_extension(line, matrix, player);
+		{
+			parse_map_size(line, matrix);
+			matrix->map = reading_create_map(alocate_matrix(\
+			matrix->size_map_x, matrix->size_map_y), line, matrix);
+			print_map(matrix->map, player);
+			map_free(matrix);
+		}
 		if (ft_isstrstr(line, "=="))
 			parse_result(line, player);
 	}
-	print_result(player);
+	dprintf(2, "\n%sFILLER :\t%jd%s\n%sENEMY :\t\t%jd%s\n\n", GREEN, \
+		player->res_filler, RESET, RED, player->res_enemy, RESET);
+	dprintf(2, "\n\n%sWINNER IS %s!%s\n\n", GREEN, \
+		player->res_filler > player->res_enemy ? "FILLER" : "ENEMY", RESET);
 	free(matrix);
 	free(player);
 }

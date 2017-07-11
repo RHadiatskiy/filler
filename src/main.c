@@ -61,7 +61,6 @@ static void		filler_creating_map_extension(t_matrix *matrix, char *line, \
 	matrix->map = reading_create_map(alocate_matrix(\
 		matrix->size_map_x, matrix->size_map_y), line, matrix);
 	matrix->field = set_cell_of_field(matrix, player);
-	// print_field(matrix->field, matrix);
 }
 
 static void		filler_creating_piece_extension(t_matrix *matrix, char *line, \

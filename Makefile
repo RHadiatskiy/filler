@@ -42,7 +42,8 @@ SRC= ./src/filler_brain.c ./src/filler_free.c \
 
 SRC_VISUALIZE = ./visualize/src/visualize_addition_func.c \
 				./visualize/src/visualize_initial.c \
-				./visualize/src/visualize_parsing.c
+				./visualize/src/visualize_parsing.c \
+				./visualize/src/visualize_printing.c
 
 all: $(NAME)
 

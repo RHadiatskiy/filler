@@ -76,7 +76,7 @@ void			parse_last_pace_of_enemy(char *line, t_player *player)
 {
 	char		enemy;
 
-	enemy = player->symbol == 'O' ? 'X' : 'O';	
+	enemy = player->symbol == 'O' ? 'X' : 'O';
 	if (line[6] == enemy)
 	{
 		player->enemy_last_x = ft_atoi(&line[11]);
