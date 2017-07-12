@@ -28,7 +28,7 @@ NAME=filler
 VISUALIZE=./visualize/visualize
 
 CC= gcc -o
-CFLAGS= -Wall -Wextra -Werror
+CFLAGS= -g -Wall -Wextra -Werror
 LIBFT= -L ./libft/ -lft
 LIBPRINTF= ./src/ft_printf/libftprintf.a
 MAIN= ./src/main.c
@@ -60,7 +60,7 @@ clean:
 	@echo $(RED)"\tFILLER IS CLEANED"
 
 fclean: clean
-	@rm $(NAME)
-	@rm $(VISUALIZE)
+	@rm -f $(NAME)
+	@rm -f $(VISUALIZE)
 
 re: fclean all

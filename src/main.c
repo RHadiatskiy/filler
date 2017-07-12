@@ -57,18 +57,24 @@ char			**reading_create_map(char **matrix, char *line, t_matrix *size)
 static void		filler_creating_map_extension(t_matrix *matrix, char *line, \
 	t_player *player)
 {
+	char			**tmp;
+
+	tmp = NULL;
 	parse_map_size(line, matrix);
-	matrix->map = reading_create_map(alocate_matrix(\
-		matrix->size_map_x, matrix->size_map_y), line, matrix);
+	tmp = alocate_matrix(matrix->size_map_x, matrix->size_map_y);
+	matrix->map = reading_create_map(tmp, line, matrix);
 	matrix->field = set_cell_of_field(matrix, player);
 }
 
 static void		filler_creating_piece_extension(t_matrix *matrix, char *line, \
 	t_player *player)
 {
+	char			**tmp;
+
+	tmp = NULL;
 	parse_piece_size(line, matrix);
-	matrix->piece = parse_piece(line, alocate_matrix(\
-		matrix->size_piece_height, matrix->size_piece_width), matrix);
+	tmp = alocate_matrix(matrix->size_piece_height, matrix->size_piece_width);
+	matrix->piece = parse_piece(line, tmp, matrix);
 	filler_algorithm(matrix, player);
 	matrix_free(matrix);
 }

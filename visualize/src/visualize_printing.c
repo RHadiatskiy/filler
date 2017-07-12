@@ -20,7 +20,7 @@ void			print_map(char **map, t_player *player)
 
 	i = 0;
 	filler = player->first == 1 ? 'O' : 'X';
-	ft_printf("\n\033[6;0H");
+	ft_printf("\033[6;0H");
 	while (map[i])
 	{
 		j = 0;

@@ -38,16 +38,26 @@ void			parse_players(char *line, t_player *player)
 
 void			parse_map_size(char *line, t_matrix *matrix)
 {
+	char		*tmp;
+
+	tmp = NULL;
 	matrix->size_map_x = ft_atoi(&line[7]);
+	tmp = ft_itoa(matrix->size_map_x);
 	matrix->size_map_y = ft_atoi(&line[7 + 1 + \
-		ft_strlen(ft_itoa(matrix->size_map_x))]);
+		ft_strlen(tmp)]);
+	free(tmp);
 }
 
 void			parse_piece_size(char *line, t_matrix *matrix)
 {
+	char		*tmp;
+
+	tmp = NULL;
 	matrix->size_piece_height = ft_atoi(&line[5]);
+	tmp = ft_itoa(matrix->size_piece_height);
 	matrix->size_piece_width = ft_atoi(&line[5 + 1 + \
-		ft_strlen(ft_itoa(matrix->size_piece_height))]);
+		ft_strlen(tmp)]);
+	free(tmp);
 }
 
 char			**parse_piece(char *line, char **piece, \

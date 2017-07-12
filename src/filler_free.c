@@ -26,12 +26,15 @@ void			matrix_free(t_matrix *matrix)
 		}
 		free(matrix->map);
 		free(matrix->field);
+		matrix->map = NULL;
+		matrix->field = NULL;
 	}
 	if (matrix->piece)
 	{
 		while (matrix->size_piece_height)
 			free(matrix->piece[matrix->size_piece_height--]);
 		free(matrix->piece);
+		matrix->piece = NULL;
 	}
 }
 
